@@ -1,0 +1,4 @@
+﻿*.class
+.idea/*
+out
+out/*
