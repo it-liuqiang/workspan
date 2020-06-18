@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ebiz.quartz.service.QuartzService;
+import com.ebiz.quartz.util.SpringContext;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,14 +22,12 @@ import java.io.IOException;
 public class AutoBatchServlet extends HttpServlet {
 
 
-    private QuartzService quartzService;
-
-    public void setQuartzService(QuartzService quartzService) {
-        this.quartzService = quartzService;
-    }
-
     public final Logger log = Logger.getLogger(this.getClass());
 
+    private QuartzService quartzService = null;
+
+    public AutoBatchServlet() {
+    }
     @Override
     public void destroy() {
         System.out.println("servlet容器销毁");
@@ -49,9 +48,13 @@ public class AutoBatchServlet extends HttpServlet {
         // 取spring容器中的任务调度服务bean
         try {
             //通过servlet初始化加载部署某些配置信息
+            super.init();
+            if (null == this.quartzService) {
+                this.quartzService = (QuartzService) SpringContext.getBean("quartzService");
+            }
             quartzService.initScheduler();
         } catch (Exception e) {
-            log.info("批处理加载失败，请手动加载！\n" + e.getMessage());
+            log.info("批处理加载失败，请手动加载！" , e);
         }
     }
 }

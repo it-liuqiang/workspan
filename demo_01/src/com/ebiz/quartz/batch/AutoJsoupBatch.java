@@ -1,5 +1,6 @@
 package com.ebiz.quartz.batch;
 
+import com.ebiz.base.BaseBatch;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,8 +20,8 @@ import java.util.Map;
  * @version 1.0
  * @date 2020/4/28
  */
-@Component
-public class AutoJsoupBatch {
+@Component("autoJsoupBatch")
+public class AutoJsoupBatch extends BaseBatch {
 
     public final Logger log = Logger.getLogger(this.getClass());
 
